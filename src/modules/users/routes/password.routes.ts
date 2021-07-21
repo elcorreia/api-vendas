@@ -17,7 +17,7 @@ passwordRouter.post(
   forgotPasswordController.create,
 );
 
-passwordRouter.post(
+passwordRouter.get(
   '/reset',
   celebrate({
     [Segments.BODY]: {

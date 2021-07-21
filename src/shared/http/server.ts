@@ -9,12 +9,15 @@ import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '@shared/typeorm';
 import uploadConfig from '@config/upload';
+import rateLimiter from '@shared/http/middlewares/rateLimiter';
 
 const app = express();
 
 app.use(pagination);
 app.use(cors());
 app.use(express.json());
+
+app.use(rateLimiter);
 app.use('/files', express.static(uploadConfig.directory));
 
 app.use(routes);
@@ -29,7 +32,11 @@ app.use(
       });
     }
 
-    return response.status(500).json(error);
+    console.log(error);
+    return response.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+    });
   },
 );
 
